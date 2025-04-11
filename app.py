@@ -17,14 +17,22 @@ from routes.reportes import reportes_bp
 from routes.roles import roles_bp
 from routes.categorias import categorias_bp
 from routes.catalogo import catalogo_bp
- 
+
+from flask_sqlalchemy import SQLAlchemy
+import os
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'clave_secreta_smart_cart'
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
-#CORS(app)
 
-# Conexión inicial (opcional)
-conexion = conectar_db()
+# 🔁 Conexión a base de datos en Render
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
+
+#conexion = conectar_db()
 
 # Registrar rutas
 app.register_blueprint(token_bp)
