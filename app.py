@@ -54,5 +54,16 @@ app.register_blueprint(catalogo_bp)
 def home():
     return '🚀 ¡Smart Cart backend funcionando!'
 
+@app.route("/prueba-db")
+def prueba_db():
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+        cursor.execute("SELECT 1;")
+        return {"exito": True, "mensaje": "Base de datos conectada correctamente"}
+    except Exception as e:
+        return {"exito": False, "error": str(e)}
+
+
 if __name__ == '__main__':
     app.run(debug=True)
